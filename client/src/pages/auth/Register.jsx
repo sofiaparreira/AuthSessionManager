@@ -9,8 +9,8 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState("user"); // Estado para o tipo de conta
-  const [error, setError] = useState(""); // Estado para mensagens de erro
+  const [role, setRole] = useState("user"); 
+  const [error, setError] = useState(""); 
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
@@ -29,7 +29,7 @@ export default function Register() {
       });
       navigate('/login'); 
     } catch (error) {
-      console.error('Error during registration:', error); // Loga o erro completo
+      console.error('Error during registration:', error);
       setError(error.response?.data?.error || 'Erro ao cadastrar');
     }
     

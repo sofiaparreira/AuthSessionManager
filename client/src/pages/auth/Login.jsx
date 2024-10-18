@@ -6,6 +6,7 @@ const URL = "http://localhost:3000";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false); 
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -14,20 +15,26 @@ export default function Login() {
 
     try {
       const response = await fetch(`${URL}/api/auth/login`, {
-        method: 'POST', // Defina o método como POST
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/json', // Defina o tipo de conteúdo
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }), // Envie os dados como JSON
+        body: JSON.stringify({ email, password }),
       });
 
       if (!response.ok) {
         throw new Error("Erro ao fazer login");
       }
 
-      const data = await response.json(); // Extraia os dados da resposta
-      localStorage.setItem('token', data.token); // Armazene o token
-      navigate('/'); // Redirecione para a página inicial ou onde desejar
+      const data = await response.json();
+      localStorage.setItem('token', data.token);
+
+      if (isAdmin || data.role === "admin") {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
+
     } catch (error) {
       setError(error.message || "Erro ao fazer login");
       console.error(error);
@@ -36,7 +43,7 @@ export default function Login() {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="flex min-h-full flex-1 flex-col justify-center items-center px-6 py-12 lg:px-8 ">
+      <div className="flex min-h-full flex-1 flex-col justify-center items-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             alt="Your Company"
@@ -50,12 +57,9 @@ export default function Login() {
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
           <form onSubmit={handleLogin} className="space-y-6">
-            {error && <p className="text-red-500">{error}</p>} {/* Exiba a mensagem de erro */}
+            {error && <p className="text-red-500">{error}</p>}
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
+              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                 Email address
               </label>
               <div className="mt-2">
@@ -73,17 +77,11 @@ export default function Login() {
 
             <div>
               <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
+                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                   Password
                 </label>
                 <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
+                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
                     Forgot password?
                   </a>
                 </div>
@@ -101,6 +99,19 @@ export default function Login() {
               </div>
             </div>
 
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="admin"
+                checked={isAdmin}
+                onChange={(e) => setIsAdmin(e.target.checked)} 
+                className="mr-2"
+              />
+              <label htmlFor="admin" className="text-sm font-medium leading-6 text-gray-900">
+                Login como Administrador
+              </label>
+            </div>
+
             <div>
               <button
                 type="submit"
@@ -113,10 +124,7 @@ export default function Login() {
 
           <p className="mt-10 text-center text-sm text-gray-500">
             Don't have an account yet?{" "}
-            <Link
-              to="/register"
-              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-            >
+            <Link to="/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
               Sign Up
             </Link>
           </p>
