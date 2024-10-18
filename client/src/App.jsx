@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Login from './pages/auth/Login'
-import SingUp from "./pages/auth/SingUp"
+import Register from "./pages/auth/Register"
 import Home from "./pages/Home"
 
 function App() {
@@ -8,9 +8,9 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/singup" element={<SingUp />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Home />} />
 
       </Routes>
     </Router>
