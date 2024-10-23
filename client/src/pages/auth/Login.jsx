@@ -32,7 +32,7 @@ export default function Login() {
       if (isAdmin || data.role === "admin") {
         navigate('/admin');
       } else {
-        navigate('/');
+        navigate('/home');
       }
 
     } catch (error) {

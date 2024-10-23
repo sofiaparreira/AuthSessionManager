@@ -27,7 +27,7 @@ export default function Register() {
         password,
         role
       });
-      navigate('/login'); 
+      navigate('/'); 
     } catch (error) {
       console.error('Error during registration:', error);
       setError(error.response?.data?.error || 'Erro ao cadastrar');

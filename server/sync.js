@@ -1,4 +1,3 @@
-// sync.js
 const sequelize = require('./config/db');
 
 
